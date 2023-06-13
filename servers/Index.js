@@ -8,14 +8,24 @@ const helmet = require("helmet");
 const cors = require("cors");
 const passport = require("passport");
 const morgan = require('morgan');
+const mongoose = require('mongoose')
 
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
+const url = process.env.DB_URI_DEV
 //require all the routes
 let IndexRouter = require("../routes/IndexRoute");
 
 let server = express();
+
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log("Connected to MongoDB ...", url)
+    })
+    .catch((err) => {
+        console.log(err)
+    });
+
 
 // configure app to use bodyParser
 server.use(bodyParser.json());
