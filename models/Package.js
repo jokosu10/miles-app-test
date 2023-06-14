@@ -309,6 +309,6 @@ const packageSchema = Schema(
   }
 );
 
-const Package = mongoose.model('package', packageSchema)
+const Package = mongoose.model('Package', packageSchema)
 
 module.exports = Package;
