@@ -14,9 +14,10 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const url = process.env.DB_URI_DEV
 //require all the routes
-let IndexRouter = require("../routes/IndexRoute");
+var IndexRouter = require("../routes/IndexRoute");
+var PackageRouter = require("../routes/PackageRoute")
 
-let server = express();
+var server = express();
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -52,6 +53,7 @@ server.use((req, res, next) => {
 
 //prefix all the routes
 server.use(IndexRouter);
+server.use(PackageRouter);
 
 // catch 404 and forward to error handler
 server.use(function (req, res, next) {
@@ -66,7 +68,7 @@ server.use(function (err, req, res, next) {
 
     // send the error page
     res.status(err.status || 500);
-    res.send('error');
+    res.json({ message: res.locals.message })
 });
 
 module.exports = server;

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose')
-const Package = require('../models/package');
+const Package = require('../models/Package');
 const url = process.env.DB_URI_DEV;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
