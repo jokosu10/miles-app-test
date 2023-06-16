@@ -274,10 +274,8 @@ describe('GET /api/package/:id', () => {
             __v: 0
         };
 
-        // const mockDataPackageJson = JSON.parse(mockDataPackage);
         const jsonString = JSON.stringify(mockDataPackage); // convert to JSON string
         const parsedObject = JSON.parse(jsonString); // parse the JSON string
-
 
         expect(parsedObject).toMatchObject(
             {

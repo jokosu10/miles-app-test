@@ -1,0 +1,12 @@
+{
+    "transaction_state": "NEW",
+    "customer_attribute": {
+        "Nama_Sales": "Joko Susilo",
+        "TOP": "10 Hari",
+        "Jenis_Pelanggan": "B2C"
+    },
+    "connote": {
+        "connote_service": "REG",
+        "connote_state": "NEW"
+    }
+}

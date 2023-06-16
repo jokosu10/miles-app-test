@@ -1,27 +1,40 @@
 require('dotenv').config();
 const request = require("supertest");
 const app = require("../servers/Index");
-const Package = require('../models/Package')
+const Package = require('../models/Package');
+const mongoose = require('mongoose');
 
 const { readFileSync } = require('fs');
 
 describe('Put /api/package/:id', () => {
 
-    const dataUpdated = readFileSync('./__tests__/updateData.json');
-    const dataUpdatedJson = JSON.parse(dataUpdated);
+    const dataPost = readFileSync('./__tests__/json/postData.json');
+    const dataPostJson = JSON.parse(dataPost);
 
-    const mockResponse = { message: "Success update package data by id" };
+    const dataUpdate = readFileSync('./__tests__/json/updateData.json');
+    const dataUpdateJson = JSON.parse(dataUpdate);
 
-    it('should update the package information', async () => {
+    it('should update the package data information', async () => {
+
+        const id = new mongoose.Types.ObjectId(); // generate a unique ObjectId
+
+        // Create a document in the database with the specified ID
+        Package.create({ _id: id, ...dataPostJson });
+
         const response = await request(app)
-            .put(`/api/package/${dataUpdatedJson._id}`)
-            .send(dataUpdatedJson)
+            .put(`/api/package/${id}`)
+            .send(dataUpdateJson)
             .set("Accept", "application/json")
             .expect(200);
 
+        // Fetch the updated data from the database
+        const updatedData = await Package.findById(id);
+        const jsonStringUpdatedData = JSON.stringify(updatedData);
+        const jsonParseUpdatedData = JSON.parse(jsonStringUpdatedData);
+
         expect(response.status).toBe(200);
-        expect(response.body.message).toEqual(mockResponse.message);
-        expect(response.body.data).toMatchObject(
+        expect(response.body.message).toEqual("Success update package data by id");
+        expect(jsonParseUpdatedData).toMatchObject(
             {
                 _id: expect.any(String),
                 transaction_id: expect.any(String),
@@ -119,7 +132,7 @@ describe('Put /api/package/:id', () => {
 
         const response = await request(app)
             .put('/api/package/648bcc5415b1779a5155be04')
-            .send(dataUpdatedJson)
+            .send(dataUpdateJson)
             .set("Accept", "application/json")
             .expect(404);
 
@@ -128,3 +141,70 @@ describe('Put /api/package/:id', () => {
         expect(response.body.message).toEqual("Package data not found");
     });
 });
+
+describe('Patch /api/package/:id', () => {
+    const dataPost = readFileSync('./__tests__/json/postData.json');
+    const dataPostJson = JSON.parse(dataPost);
+
+    const dataUpdatePatch = readFileSync('./__tests__/json/updateDataPatch.json');
+    const dataUpdatePatchJson = JSON.parse(dataUpdatePatch);
+
+    it('should update the package data information', async () => {
+        const id = new mongoose.Types.ObjectId(); // generate a unique ObjectId
+
+        Package.create({ _id: id, ...dataPostJson });
+
+        const response = await request(app)
+            .patch(`/api/package/${id}`)
+            .send(dataUpdatePatchJson)
+            .set("Accept", "application/json")
+            .expect(200);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toEqual("Success update package data by id");
+    });
+
+    it('should return 404 if data with the given package ID is not found', async () => {
+        const response = await request(app)
+            .patch('/api/package/648bcc5415b1779a5155be04')
+            .send(dataPostJson)
+            .set("Accept", "application/json")
+            .expect(404);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty("message");
+        expect(response.body.message).toEqual("Package data not found");
+    });
+});
+
+describe('Delete /api/package/:id', () => {
+    const dataPost = readFileSync('./__tests__/json/postData.json');
+    const dataPostJson = JSON.parse(dataPost);
+
+    it('should delete the package data information', async () => {
+        const id = new mongoose.Types.ObjectId(); // generate a unique ObjectId
+
+        Package.create({ _id: id, ...dataPostJson });
+
+        const response = await request(app)
+            .delete(`/api/package/${id}`)
+            .set("Accept", "application/json")
+            .expect(200);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toEqual("Success delete package data by id");
+    });
+
+    it('should return 404 if data with the given package ID is not found', async () => {
+        const response = await request(app)
+            .delete('/api/package/648bcc5415b1779a5155be04')
+            .set("Accept", "application/json")
+            .expect(404);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty("message");
+        expect(response.body.message).toEqual("Package data not found");
+    });
+});
+
+
