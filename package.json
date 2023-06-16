@@ -4,7 +4,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest __tests__ --coverage controllers",
+    "test": "jest --testEnvironment=node __tests__ --coverage --verbose",
     "dev": "./node_modules/.bin/nodemon app.js"
   },
   "jest": {
@@ -39,6 +39,7 @@
     "@types/jest": "^25.2.3",
     "jest": "^29.5.0",
     "jest-cli": "^29.5.0",
+    "mongodb-memory-server": "^8.13.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
     "supertest": "^4.0.2"

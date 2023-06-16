@@ -2,7 +2,6 @@
 const mongoose = require("mongoose")
 
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 
 // Define the sub-document schema for the objects in the array
 const subKoliDataSchema = new Schema({
@@ -35,7 +34,7 @@ const subKoliDataSchema = new Schema({
     type: String
   },
   koli_formula_id: {
-    type: ObjectId
+    type: String
   },
   connote_id: {
     type: String,
@@ -98,7 +97,7 @@ const packageSchema = Schema(
       type: Number
     },
     location_id: {
-      type: ObjectId,
+      type: String,
       required: true,
     },
     organization_id: {
@@ -194,17 +193,17 @@ const packageSchema = Schema(
         type: Number
       },
       location_id: {
-        type: ObjectId,
+        type: String,
         required: true,
       },
       connote_total_package: {
-        type: Date
+        type: String
       },
       connote_surcharge_amount: {
-        type: Date
+        type: String
       },
       connote_sla_day: {
-        type: Date
+        type: String
       },
       location_name: {
         type: String
@@ -255,7 +254,7 @@ const packageSchema = Schema(
         type: Number
       },
       location_id: {
-        type: ObjectId,
+        type: String,
         required: true,
       }
     },
@@ -285,7 +284,7 @@ const packageSchema = Schema(
         type: Number
       },
       location_id: {
-        type: ObjectId,
+        type: String,
         required: true,
       }
     },

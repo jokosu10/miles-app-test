@@ -29,7 +29,7 @@ const getAll = async (req, res, next) => {
             return;
         }
 
-        await res.status(200).json({
+        res.status(200).json({
             message: "Success get all package data",
             data: data
         });
@@ -150,7 +150,7 @@ const updateDataUsingPatch = async (req, res, next) => {
             return;
         }
 
-        var updatedResource = await Package.findByIdAndUpdate(
+        await Package.findByIdAndUpdate(
             packageId,
             { $set: updateFieldPackage },
             { new: true }
@@ -161,7 +161,6 @@ const updateDataUsingPatch = async (req, res, next) => {
 
         res.status(200).json({
             message: "Success update package data by id",
-            data: updatedResource
         });
     } catch (error) {
         res.status(500).json({
@@ -187,13 +186,11 @@ const deleteDataById = async (req, res, next) => {
             return;
         }
 
-        var deletedPackage = await Package.findByIdAndDelete(packageId);
-        
-        res.status(200).json({
-            message: "Success delete package data by id",
-            data: deletedPackage
-        });
+        await Package.findByIdAndDelete(packageId);
 
+        res.status(200).json({
+            message: "Success delete package data by id"
+        });
     } catch (error) {
         res.status(500).json({
             message: "Failed delete package data by id",
