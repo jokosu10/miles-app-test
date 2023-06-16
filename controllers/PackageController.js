@@ -29,7 +29,7 @@ const getAll = async (req, res, next) => {
             return;
         }
 
-        await res.status(200).json({
+        res.status(200).json({
             message: "Success get all package data",
             data: data
         });
@@ -188,7 +188,7 @@ const deleteDataById = async (req, res, next) => {
         }
 
         var deletedPackage = await Package.findByIdAndDelete(packageId);
-        
+
         res.status(200).json({
             message: "Success delete package data by id",
             data: deletedPackage

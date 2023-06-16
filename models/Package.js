@@ -198,13 +198,13 @@ const packageSchema = Schema(
         required: true,
       },
       connote_total_package: {
-        type: Date
+        type: String
       },
       connote_surcharge_amount: {
-        type: Date
+        type: String
       },
       connote_sla_day: {
-        type: Date
+        type: String
       },
       location_name: {
         type: String
